@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    include includes/commonhead
+    block customhead
+
+  body.bg-light
+    .d-flex#wrapper
+      include includes/sidebar
+      .page-content-wrapper.w-100
+        include includes/navbar
+        .container-fluid
+          block content
+          
+    include includes/commonscripts
+    block customscripts

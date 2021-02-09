@@ -1,0 +1,64 @@
+extends layout
+
+block content
+  h2.my-4.text-center Blog Articles
+
+  .row
+    .col.mb-3.text-right
+      a.btn.btn-theme(href="/articles/add") New Article
+  .row
+    .col.my-3
+      include includes/messages
+  .row
+    .col
+      table.table.table-borderless.table-hover
+        thead.bg-theme.text-white
+          tr
+            th S.No.
+            th Image
+            th Title
+            th Published
+            th Priority
+            th Created
+            th Updated
+            th Actions
+        tbody
+          each article, index in articles
+            tr
+              td=index+1
+              td
+                img.small-image(src=`/img/article-images/${article.image}`, alt=article.title)
+              td=article.title
+              td=article.published
+              td=article.priority
+              td.date-cell=article.createdAt
+              td.date-cell=article.editedAt
+              td
+                a.text-danger.btn-delete(href=`/articles/delete/${article.id}`, title="Delete Article")
+                  fa.fas.fa-trash
+                a.text-primary.ml-3(href=`/articles/edit/${article.id}`, title="Update Article")
+                  fa.fas.fa-edit
+
+block customscripts
+  script.
+    $('.date-cell').each(function (index, element) {
+      $(element).text(moment($(element).text()).format('MM/DD/YYYY HH:mm:ss'))
+    });
+
+    $(document).ready(function () {
+      $('.btn-delete').on('click', function (e) {
+        e.preventDefault();
+        var deleteURL = $(this).attr("href");
+        swal.fire({
+          title: "Are you sure?",
+          text: "You will not be able to recover this Artist!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+        }).then(function (result) {
+          if (result.value) {
+            window.location.href = deleteURL;
+          }
+        })
+      });
+    });

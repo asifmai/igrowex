@@ -1,0 +1,34 @@
+extends layout
+
+block content
+  h2.my-4.text-center Edit Artist
+  
+  .container
+    form(action="/users/edit", method="post")
+      .card
+        .card-body
+          .row
+            .col-md-6.form-group
+              input.d-none(type="text", value=foundUser._id, name="id")
+              label(for="firstName") First Name
+              input#firstName.form-control(type="text" name="firstName" required value=foundUser.profile.firstName)
+            .col-md-6.form-group
+              label(for="lastName") Last Name
+              input#lastName.form-control(type="text" name="lastName" required value=foundUser.profile.lastName)
+            .col-md-6.form-group
+              label(for="email") Email
+              input#email.form-control(type="email" name="email" required value=foundUser.email)
+            .col-md-6.form-group
+              label(for="phone") Phone
+              input#phone.form-control(type="text" name="phone" value=foundUser.profile.phone)
+            .col-md-12.form-group
+              label(for="address") Address
+              textarea#address.form-control(type="text" name="address")=foundUser.profile.address
+            .col-md-6.form-group
+              label(for="password") New Password
+              input#password.form-control(type="text" name="password" placeholder="Enter New Password if you want to change it")
+          .row
+            .col-md-3.mt-3.offset-md-3
+              a.btn-block.btn.btn-secondary(href="/users") Back
+            .col-md-3.mt-3
+              button.btn-block.btn.btn-success Update
