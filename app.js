@@ -27,8 +27,9 @@ app.set('view engine', 'pug');
 // Log Routes
 app.use(logger('dev'));
 
-// Body Parser
-app.use(express.urlencoded({ extended: false }));
+// Accept Json in Request
+app.use(express.json({ extended: true, limit: '200mb' }));
+app.use(express.urlencoded({ extended: false, limit: '200mb' }));
 
 // Express Session
 app.use(

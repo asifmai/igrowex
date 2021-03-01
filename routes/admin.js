@@ -16,13 +16,12 @@ router.post('/login', adminController.login_post);
 /* GET - Public - admin log out */
 router.get('/logout', auth.ensureAuthenticatedAdmin, adminController.logout_get);
 
-// User Routes
+// Articles Routes
 router.get('/articles', auth.ensureAuthenticatedAdmin, articleController.article_get);
 router.get('/articles/add', auth.ensureAuthenticatedAdmin, articleController.addarticle_get);
 router.post('/articles', auth.ensureAuthenticatedAdmin, articleController.article_post);
 router.get('/articles/delete/:id', auth.ensureAuthenticatedAdmin, articleController.article_delete);
 router.get('/articles/edit/:id', auth.ensureAuthenticatedAdmin, articleController.editarticle_get);
 router.post('/articles/edit', auth.ensureAuthenticatedAdmin, articleController.editarticle_post);
-
 
 module.exports = router;
