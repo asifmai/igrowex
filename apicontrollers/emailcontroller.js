@@ -25,7 +25,7 @@ module.exports.sendmail = async (req, res) => {
       message,
     });
 
-    res.status(200).json({ status: 200, data });
+    res.status(200).json({ status: 200, data: 'sent email' });
   } catch (error) {
     console.log('sendmail error', error.stack);
     res.status(500).json({ status: 500, data: 'Server Error' });

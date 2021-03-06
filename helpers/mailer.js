@@ -6,11 +6,11 @@ module.exports.sendMail = async (options) =>
       const account = await nodemailer.createTestAccount();
 
       let transporter = nodemailer.createTransport({
-        service: 'Outlook365',
-        auth: {
-          user: process.env.OUTLOOK_USER,
-          pass: process.env.OUTLOOK_PASSWORD,
-        },
+        host: 'smtp.office365.com',
+        port: '587',
+        auth: { user: process.env.OUTLOOK_USER, pass: process.env.OUTLOOK_PASSWORD },
+        secureConnection: false,
+        tls: { ciphers: 'SSLv3' },
       });
 
       const mailOptions = {
