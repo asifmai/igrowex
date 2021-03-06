@@ -11,9 +11,8 @@ module.exports.sendmail = async (req, res) => {
     // Validators
     const errors = [];
     if (validator.isEmpty(name) || validator.isEmpty(subject) || validator.isEmpty(message)) {
-      errors.push('name, toEmail, subject and body is required');
+      errors.push('name, subject and message is required');
     }
-    if (!validator.isEmail(toEmail)) errors.push('email is invalid');
 
     if (errors.length) {
       return res.status(400).json({ status: 400, data: errors.join('\n') });
