@@ -3,8 +3,9 @@ const router = express.Router();
 const passport = require('passport');
 const userController = require('../apicontrollers/userscontroller');
 const authController = require('../apicontrollers/authcontroller');
-const apiController = require('../apicontrollers/articlescontroller.js');
+const articleController = require('../apicontrollers/articlescontroller.js');
 const customersController = require('../apicontrollers/customerscontroller.js');
+const emailController = require('../apicontrollers/emailcontroller.js');
 
 // Authenticate Using Passport
 const login = passport.authenticate('local', { session: false });
@@ -26,7 +27,10 @@ router.put('/customers', apiAuth, customersController.customers_put);
 router.post('/customers/delete-multiple', apiAuth, customersController.customers_delete_multiple_post);
 
 // Articles Routes
-router.get('/articles', apiController.articles_get);
-router.get('/article/:slug', apiController.article_get);
+router.get('/articles', articleController.articles_get);
+router.get('/article/:slug', articleController.article_get);
+
+// Email Routes
+router.post('/sendmail', emailController.sendmail);
 
 module.exports = router;
