@@ -21,11 +21,9 @@ module.exports.sendMail = async (options) =>
 
       const mailOptions = {
         from: `Contact Us <${process.env.GMAIL_USER}>`,
-        // to: process.env.OUTLOOK_USER,
-        to: 'asifmai@hotmail.com',
+        to: 'info@igrowex.com',
         subject: options.subject,
         html: generateEmailBody(options),
-        // text: 'Hello World!'
       };
 
       const info = await transporter.sendMail(mailOptions);

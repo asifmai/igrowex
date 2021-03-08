@@ -1,0 +1,365 @@
+{
+	"info": {
+		"_postman_id": "04758566-d96e-4e80-98f3-2a04ac393e28",
+		"name": "iGrowx",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Customers",
+			"item": [
+				{
+					"name": "Customers - Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwM2NiZWY1MmU4ZjAxNWRmNDgxZWNkYSIsImlhdCI6MTYxNDU5OTI4NCwiZXhwIjoxNjQ2MTM1Mjg0fQ._hxjaftztix2thEsUVK02_GKPy3yKwLQzHiXiExau7g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"customer2@hotmail.com\",\r\n    \"name\": \"Customer 2\",\r\n    \"occupation\": \"Finance\",\r\n    \"location\": \"Arakansas, US\",\r\n    \"phone\": \"+13462440718\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/{{version}}/customers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{version}}",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Customers - Read",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwM2NiZWY1MmU4ZjAxNWRmNDgxZWNkYSIsImlhdCI6MTYxNDU5OTI4NCwiZXhwIjoxNjQ2MTM1Mjg0fQ._hxjaftztix2thEsUVK02_GKPy3yKwLQzHiXiExau7g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/{{version}}/customers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{version}}",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Customers - Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwM2NiZWY1MmU4ZjAxNWRmNDgxZWNkYSIsImlhdCI6MTYxNDU5OTI4NCwiZXhwIjoxNjQ2MTM1Mjg0fQ._hxjaftztix2thEsUVK02_GKPy3yKwLQzHiXiExau7g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customerId\": \"603cd4dc5cbbd462d44b551d\",\r\n    \"email\": \"customer2@hotmail.com\",\r\n    \"name\": \"Customer 2a\",\r\n    \"occupation\": \"Finance\",\r\n    \"location\": \"Arakansas, US\",\r\n    \"phone\": \"+13462440718\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/{{version}}/customers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{version}}",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Customers - Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwM2NiZWY1MmU4ZjAxNWRmNDgxZWNkYSIsImlhdCI6MTYxNDU5ODc2MywiZXhwIjoxNjQ2MTM0NzYzfQ.iZDCo0QqnSF00JkmLcesJ0JiaF8OELkrbeK8wHfPjS0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/{{version}}/customers/603cd2cd0fe21b65d06ef8c1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{version}}",
+								"customers",
+								"603cd2cd0fe21b65d06ef8c1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Customers - Delete Multiple",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwM2NiZWY1MmU4ZjAxNWRmNDgxZWNkYSIsImlhdCI6MTYxNDU5OTYzOSwiZXhwIjoxNjQ2MTM1NjM5fQ.KeHjEJXvwJkVQFsG4Eqkb4PqEiapbvC4KyJZVFTnxfs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customers\": [\r\n        \"92384902384902384\",\r\n        \"92384902384902385\",\r\n        \"92384902384902386\"\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/{{version}}/customers/delete-multiple",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{version}}",
+								"customers",
+								"delete-multiple"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Users - Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"asifmai@hotmail.com\",\r\n    \"password\": \"123456\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/{{version}}/users/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{version}}",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - Me",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwM2NiZWY1MmU4ZjAxNWRmNDgxZWNkYSIsImlhdCI6MTYxNDU5OTI4NCwiZXhwIjoxNjQ2MTM1Mjg0fQ._hxjaftztix2thEsUVK02_GKPy3yKwLQzHiXiExau7g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"asifmai@hotmail.com\",\r\n    \"password\": \"123456\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/{{version}}/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{version}}",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"asifmai@hotmail.com\",\r\n    \"firstName\": \"Iqbal\",\r\n    \"lastName\": \"Shahzad\",\r\n    \"password\": \"123456\"\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/{{version}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{version}}",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Server Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/{{version}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{version}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Email",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Iqbal\",\r\n    \"subject\": \"Teest mail\",\r\n    \"message\": \"This is a test message\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/{{version}}/sendmail",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"{{version}}",
+						"sendmail"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api",
+			"disabled": true
+		},
+		{
+			"key": "version",
+			"value": "v1"
+		},
+		{
+			"key": "base_url",
+			"value": "http://68.183.98.199:5005/api"
+		}
+	]
+}
