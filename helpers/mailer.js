@@ -6,14 +6,15 @@ module.exports.sendMail = async (options) =>
       const account = await nodemailer.createTestAccount();
 
       let transporter = nodemailer.createTransport({
-        host: 'smtp.office365.com',
-        port: 587,
-        secure: false,
-        auth: { user: process.env.OUTLOOK_USER, pass: process.env.OUTLOOK_PASSWORD },
+        service: 'gmail',
+        auth: {
+          user: process.env.GMAIL_USER,
+          pass: process.env.GMAIL_PASSWORD,
+        },
       });
 
       const mailOptions = {
-        from: `Contact Us <${process.env.OUTLOOK_USER}>`,
+        from: `Contact Us <${process.env.GMAIL_USER}>`,
         // to: process.env.OUTLOOK_USER,
         to: 'asifmai@hotmail.com',
         subject: options.subject,

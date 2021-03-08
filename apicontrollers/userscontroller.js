@@ -1,5 +1,17 @@
 const validator = require('validator');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+
+function generateTokenResponse(user) {
+  const userInfo = {
+    id: user._id,
+  };
+
+  return {
+    token: 'Bearer ' + jwt.sign(userInfo, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRY }),
+    user,
+  };
+}
 
 module.exports.register_post = async (req, res) => {
   const errors = [];
@@ -29,7 +41,7 @@ module.exports.register_post = async (req, res) => {
     });
     await user.save();
 
-    res.status(200).json({ status: 200, data: 'User registered' });
+    res.status(200).json({ status: 200, data: generateTokenResponse(user) });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
