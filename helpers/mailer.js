@@ -5,15 +5,22 @@ module.exports.sendMail = async (options) =>
     try {
       const account = await nodemailer.createTestAccount();
 
-      let transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: false,
-        auth: { user: process.env.OUTLOOK_USER, pass: process.env.OUTLOOK_PASSWORD },
+      var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com', // hostname
+        secureConnection: false, // TLS requires secureConnection to be false
+        port: 587, // port for secure SMTP
+        requireTLS: true, //this parameter solved problem for me
+        auth: {
+          user: process.env.GMAIL_USER,
+          pass: process.env.GMAIL_PASSWORD,
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
       });
 
       const mailOptions = {
-        from: `Contact Us <${process.env.OUTLOOK_USER}>`,
+        from: `Contact Us <${process.env.GMAIL_USER}>`,
         // to: process.env.OUTLOOK_USER,
         to: 'asifmai@hotmail.com',
         subject: options.subject,
