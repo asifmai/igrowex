@@ -14,12 +14,15 @@ function generateTokenResponse(user) {
 }
 
 module.exports.register_post = async (req, res) => {
-  const errors = [];
   const email = req.body.email ? req.body.email.trim() : '';
   const password = req.body.password ? req.body.password.trim() : '';
   const firstName = req.body.firstName ? req.body.firstName.trim() : '';
   const lastName = req.body.lastName ? req.body.lastName.trim() : '';
 
+  const errors = [];
+  if (validator.isEmpty(firstName) || validator.isEmpty(lastName) || validator.isEmpty(email) || validator.isEmpty(password)) {
+    errors.push('name, email, firstName and lastName are required');
+  }
   if (!validator.isEmail(email)) errors.push('Email is not valid');
   if (!validator.isByteLength(password, { min: 6 })) errors.push('Password must be at least 6 characters');
 
