@@ -41,6 +41,15 @@ module.exports.register_post = async (req, res) => {
       lastName,
       email,
       password,
+      billing: {
+        creditCard: '',
+        date: '',
+        cvv: '',
+      },
+      links: {
+        google: '',
+        yelp: '',
+      },
     });
     await user.save();
 
