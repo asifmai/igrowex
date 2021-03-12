@@ -8,11 +8,7 @@ const customerSchema = new mongoose.Schema(
       ref: 'User',
     },
     name: String,
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+    email: String,
     occupation: String,
     phone: String,
     location: String,
