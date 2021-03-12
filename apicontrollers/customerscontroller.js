@@ -22,6 +22,8 @@ module.exports.customers_post = async (req, res) => {
     const occupation = req.body.occupation ? req.body.occupation.trim() : '';
     const phone = req.body.phone ? req.body.phone.trim() : '';
     const location = req.body.location ? req.body.location.trim() : '';
+    const smsNotification = req.body.smsNotification;
+    const emailNotification = req.body.emailNotification;
 
     // Validators
     const errors = [];
@@ -30,9 +32,11 @@ module.exports.customers_post = async (req, res) => {
       validator.isEmpty(email) ||
       validator.isEmpty(occupation) ||
       validator.isEmpty(phone) ||
-      validator.isEmpty(location)
+      validator.isEmpty(location) ||
+      smsNotification === '' ||
+      emailNotification === ''
     ) {
-      errors.push('name, email, occupation, phone and location is required');
+      errors.push('name, email, occupation, phone, location, smsNotification and emailNotification is required');
     }
     if (!validator.isEmail(email)) {
       errors.push('Email not valid');
@@ -58,6 +62,8 @@ module.exports.customers_post = async (req, res) => {
       occupation,
       phone,
       location,
+      smsNotification,
+      emailNotification,
     });
     await newCustomer.save();
 
@@ -92,6 +98,8 @@ module.exports.customers_put = async (req, res) => {
     const occupation = req.body.occupation ? req.body.occupation.trim() : '';
     const phone = req.body.phone ? req.body.phone.trim() : '';
     const location = req.body.location ? req.body.location.trim() : '';
+    const smsNotification = req.body.smsNotification;
+    const emailNotification = req.body.emailNotification;
 
     // Validators
     const errors = [];
@@ -101,9 +109,11 @@ module.exports.customers_put = async (req, res) => {
       validator.isEmpty(email) ||
       validator.isEmpty(occupation) ||
       validator.isEmpty(phone) ||
-      validator.isEmpty(location)
+      validator.isEmpty(location) ||
+      smsNotification === '' ||
+      emailNotification === ''
     ) {
-      errors.push('customerId, name, email, occupation, phone and location is required');
+      errors.push('customerId, name, email, occupation, phone, location smsNotification and emailNotification is required');
     }
     if (!validator.isEmail(email)) {
       errors.push('Email not valid');
@@ -120,7 +130,8 @@ module.exports.customers_put = async (req, res) => {
       occupation,
       phone,
       location,
-      updatedAt: new Date(),
+      smsNotification,
+      emailNotification,
     });
     const data = await Customer.findById(customerId);
 

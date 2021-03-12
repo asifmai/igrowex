@@ -6,6 +6,7 @@ const authController = require('../apicontrollers/authcontroller');
 const articleController = require('../apicontrollers/articlescontroller.js');
 const customersController = require('../apicontrollers/customerscontroller.js');
 const emailController = require('../apicontrollers/emailcontroller.js');
+const templatesController = require('../apicontrollers/templatescontroller.js');
 
 // Authenticate Using Passport
 const login = passport.authenticate('local', { session: false });
@@ -18,6 +19,8 @@ router.get('/', (req, res) => res.status(200).json({ status: 200, data: 'iGrowX 
 router.post('/users', userController.register_post);
 router.post('/users/login', login, authController.login_post);
 router.get('/users/me', apiAuth, authController.me_get);
+router.post('/users/billing', apiAuth, userController.users_billing_post);
+router.post('/users/links', apiAuth, userController.users_links_post);
 
 // Customers Routes
 router.get('/customers', apiAuth, customersController.customers_get);
@@ -25,6 +28,12 @@ router.post('/customers', apiAuth, customersController.customers_post);
 router.delete('/customers/:id', apiAuth, customersController.customers_delete);
 router.put('/customers', apiAuth, customersController.customers_put);
 router.post('/customers/delete-multiple', apiAuth, customersController.customers_delete_multiple_post);
+
+// Template Routes
+router.get('/templates', apiAuth, templatesController.templates_get);
+router.post('/templates', apiAuth, templatesController.templates_post);
+router.delete('/templates/:id', apiAuth, templatesController.templates_delete);
+router.get('/templates/select/:id', apiAuth, templatesController.templates_select_get);
 
 // Articles Routes
 router.get('/articles', articleController.articles_get);
