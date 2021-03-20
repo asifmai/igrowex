@@ -83,7 +83,8 @@ module.exports.sendMailToCustomer = async (customerEmail, subject, body) =>
         from: `Contact Us <${process.env.GMAIL_USER}>`,
         to: customerEmail,
         subject,
-        text: body,
+        // text: body,
+        html: body,
       };
 
       const info = await transporter.sendMail(mailOptions);

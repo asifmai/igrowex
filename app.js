@@ -65,6 +65,7 @@ app.use((req, res, next) => {
 
 // Routes Configuration
 app.use('/api/v1', require('./routes/api'));
+app.use('/redirect', require('./routes/redirect'));
 app.use('/', require('./routes/admin'));
 
 // catch 404 and forward to error handler

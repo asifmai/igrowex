@@ -33,8 +33,9 @@ module.exports = (userId, customerId) =>
       if (errors.length) return reject(errors);
 
       // Process
-      const selectedLink = user.links.google.active ? user.links.google.url : user.links.yelp.url;
-      const messageBody = `${selectedTemplate.body}\n${selectedLink}`;
+      const redirectUrl = `${process.env.BACKEND_URL}/redirect/${user.email.match(/^.*(?=@)/gi)[0]}/${customerId}`;
+      const messageBody = `${selectedTemplate.body}\n${redirectUrl}`;
+      const messageBodyEmail = `${selectedTemplate.body}<br /><a href="${redirectUrl}">${redirectUrl}</a>`;
       if (customer.smsNotification) {
         await twilio.sendMesage(customer.phone, messageBody);
         const newMessage = new Message({
@@ -45,7 +46,7 @@ module.exports = (userId, customerId) =>
         await newMessage.save();
       }
       if (customer.emailNotification) {
-        await mailer.sendMailToCustomer(customer.email, messageBody);
+        await mailer.sendMailToCustomer(customer.email, messageBodyEmail);
         const newMessage = Message({
           user: userId,
           customer: customerId,
