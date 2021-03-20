@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema(
       default: true,
     },
     stripeCustomerId: String,
+    lastCharged: {
+      type: Date,
+      default: null,
+    },
     links: {
       google: {
         url: String,

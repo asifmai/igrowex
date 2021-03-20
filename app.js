@@ -10,12 +10,15 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
+const userChargeCron = require('./helpers/userschargecron');
 
 // Connect to MongoDB
 connectDb();
 
 // Initialize App
 const app = express();
+
+userChargeCron.chargeUsers();
 
 // Passport Config
 require('./helpers/passport')(passport);
