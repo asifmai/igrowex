@@ -18,7 +18,7 @@ connectDb();
 // Initialize App
 const app = express();
 
-userChargeCron.chargeUsers();
+// userChargeCron.chargeUsers();
 
 // Passport Config
 require('./helpers/passport')(passport);
