@@ -21,6 +21,7 @@ const localLogin = new LocalStrategy({ usernameField: 'email', passwordField: 'p
   // Match user
   try {
     const user = await User.findOne({ email });
+    // console.log(user);
     if (!user) {
       return done(null, false, { message: 'User not found' });
     }
@@ -28,8 +29,9 @@ const localLogin = new LocalStrategy({ usernameField: 'email', passwordField: 'p
     if (!validate) {
       return done(null, false, { message: 'Wrong Password' });
     }
-    return done(null, user, { message: 'Logged in Successfully' });
+    return done(null, user.toJSON(), { message: 'Logged in Successfully' });
   } catch (error) {
+    console.log(error);
     return done(error);
   }
 });
@@ -42,6 +44,7 @@ const jwtOptions = {
 
 const jwtLogin = new JwtStrategy(jwtOptions, function (jwtPayload, done) {
   return User.findById(jwtPayload.id)
+    .lean()
     .then((user) => {
       if (!user) return done(null, false);
 

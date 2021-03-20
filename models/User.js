@@ -19,14 +19,30 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    billing: {
-      creditCard: String,
-      date: String,
-      cvv: Number,
+    trial: {
+      type: Boolean,
+      default: true,
     },
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    stripeCustomerId: String,
     links: {
-      google: String,
-      yelp: String,
+      google: {
+        url: String,
+        active: {
+          type: Boolean,
+          default: true,
+        },
+      },
+      yelp: {
+        url: String,
+        active: {
+          type: Boolean,
+          default: false,
+        },
+      },
     },
   },
   { timestamps: true }
@@ -54,6 +70,7 @@ userSchema.pre('findOneAndUpdate', async function (next) {
 // Check if the password is correct
 userSchema.methods.isValidPassword = async function (password) {
   const compare = await bcrypt.compare(password, this.password);
+  console.log(compare);
   return compare;
 };
 

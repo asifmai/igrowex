@@ -1,6 +1,7 @@
 const validator = require('validator');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 function generateTokenResponse(user) {
   const userInfo = {
@@ -36,19 +37,25 @@ module.exports.register_post = async (req, res) => {
       return res.status(400).json({ status: 400, data: 'User already exists' });
     }
 
+    const customer = await stripe.customers.create({
+      email,
+      name: firstName + ' ' + lastName,
+      description: 'User on igrowex',
+    });
+
     user = new User({
       firstName,
       lastName,
       email,
       password,
-      billing: {
-        creditCard: '',
-        date: '',
-        cvv: '',
-      },
+      stripeCustomerId: customer.id,
       links: {
-        google: '',
-        yelp: '',
+        google: {
+          url: '',
+        },
+        yelp: {
+          url: '',
+        },
       },
     });
     await user.save();
@@ -60,48 +67,18 @@ module.exports.register_post = async (req, res) => {
   }
 };
 
-module.exports.users_billing_post = async (req, res) => {
-  try {
-    // Fetch Data from Request
-    const creditCard = req.body.creditCard ? req.body.creditCard.trim() : '';
-    const date = req.body.date ? req.body.date.trim() : '';
-    const cvv = req.body.cvv ? req.body.cvv : '';
-
-    // Validators
-    const errors = [];
-    if (validator.isEmpty(creditCard) || validator.isEmpty(date) || cvv === '') {
-      errors.push('creditCard, date and cvv are required');
-    }
-
-    if (errors.length) {
-      return res.status(400).json({ status: 400, data: errors.join('\n') });
-    }
-
-    // Process
-    await User.findByIdAndUpdate(req.user._id, {
-      billing: {
-        creditCard,
-        date,
-        cvv,
-      },
-    });
-
-    res.status(200).json({ status: 200, data: 'updated' });
-  } catch (error) {
-    console.log('users_billing_post error', error.stack);
-    res.status(500).json({ status: 500, data: 'Server Error' });
-  }
-};
-
 module.exports.users_links_post = async (req, res) => {
   try {
     // Fetch Data from Request
-    const google = req.body.google ? req.body.google.trim() : '';
-    const yelp = req.body.yelp ? req.body.yelp.trim() : '';
+    const google = req.body.google ? req.body.google : '';
+    const yelp = req.body.yelp ? req.body.yelp : '';
 
     // Validators
     const errors = [];
-    if (validator.isEmpty(google) || validator.isEmpty(yelp)) {
+    if (google == '' || yelp == '') {
+      errors.push('google and yelp are required');
+    }
+    if (validator.isEmpty(google.url) || validator.isEmpty(yelp.url)) {
       errors.push('google and yelp are required');
     }
 
@@ -120,6 +97,45 @@ module.exports.users_links_post = async (req, res) => {
     res.status(200).json({ status: 200, data: 'updated' });
   } catch (error) {
     console.log('users_links_post error', error.stack);
+    res.status(500).json({ status: 500, data: 'Server Error' });
+  }
+};
+
+module.exports.setupcard_get = async (req, res) => {
+  try {
+    // Process
+    const intent = await stripe.setupIntents.create({
+      customer: req.user.stripeCustomerId,
+    });
+
+    res.status(200).json({ status: 200, data: intent.client_secret });
+  } catch (error) {
+    console.log('setupcard_get error', error.stack);
+    res.status(500).json({ status: 500, data: 'Server Error' });
+  }
+};
+
+module.exports.removecard_post = async (req, res) => {
+  try {
+    // Fetch Data from Request
+    const pmId = req.body.pmId ? req.body.pmId.trim() : '';
+
+    // Validators
+    const errors = [];
+    if (validator.isEmpty(pmId)) {
+      errors.push('pmId is required');
+    }
+
+    if (errors.length) {
+      return res.status(400).json({ status: 400, data: errors.join('\n') });
+    }
+
+    // Process
+    const paymentMethod = await stripe.paymentMethods.detach(pmId);
+
+    res.status(200).json({ status: 200, data: 'Removed' });
+  } catch (error) {
+    console.log('removecard_post error', error.stack);
     res.status(500).json({ status: 500, data: 'Server Error' });
   }
 };

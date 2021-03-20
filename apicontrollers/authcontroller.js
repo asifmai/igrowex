@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 function generateTokenResponse(user) {
   const userInfo = {
@@ -15,6 +16,15 @@ module.exports.login_post = async function (req, res, next) {
   return res.status(200).json({ status: 200, data: generateTokenResponse(req.user) });
 };
 
-module.exports.me_get = (req, res, next) => {
+module.exports.me_get = async (req, res, next) => {
+  const user = req.user;
+  if (req.user.stripeCustomerId) {
+    const paymentMethods = await stripe.paymentMethods.list({
+      customer: req.user.stripeCustomerId,
+      type: 'card',
+    });
+    user.paymentMethods = paymentMethods.data;
+  }
+
   return res.status(200).json({ status: 200, data: req.user });
 };

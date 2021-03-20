@@ -19,7 +19,7 @@ module.exports.sendmail = async (req, res) => {
     }
 
     // Process
-    mailer.sendMail({
+    mailer.sendContactMail({
       name,
       subject,
       message,

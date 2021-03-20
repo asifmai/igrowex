@@ -1,4 +1,5 @@
 const validator = require('validator');
+const sendMessage = require('../helpers/sendmessage');
 
 const Customer = require('../models/Customer');
 
@@ -163,6 +164,24 @@ module.exports.customers_delete_multiple_post = async (req, res) => {
     res.status(200).json({ status: 200, data: 'Multiple customers deleted' });
   } catch (error) {
     console.log('customers_delete_multiple_post error', error.stack);
+    res.status(500).json({ status: 500, data: 'Server Error' });
+  }
+};
+
+module.exports.customers_send_message_get = async (req, res) => {
+  try {
+    // Fetch Data from Request
+    const customerId = req.params.id;
+
+    // Process
+    try {
+      await sendMessage(req.user._id, customerId);
+      res.status(200).json({ status: 200, data: 'Sent' });
+    } catch (error) {
+      return res.status(400).json({ status: 400, data: error });
+    }
+  } catch (error) {
+    console.log('customers_send_message_get error', error.stack);
     res.status(500).json({ status: 500, data: 'Server Error' });
   }
 };

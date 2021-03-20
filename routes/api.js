@@ -19,8 +19,9 @@ router.get('/', (req, res) => res.status(200).json({ status: 200, data: 'iGrowX 
 router.post('/users', userController.register_post);
 router.post('/users/login', login, authController.login_post);
 router.get('/users/me', apiAuth, authController.me_get);
-router.post('/users/billing', apiAuth, userController.users_billing_post);
 router.post('/users/links', apiAuth, userController.users_links_post);
+router.get('/users/setupcard', apiAuth, userController.setupcard_get);
+router.post('/users/removecard', apiAuth, userController.removecard_post);
 
 // Customers Routes
 router.get('/customers', apiAuth, customersController.customers_get);
@@ -28,6 +29,7 @@ router.post('/customers', apiAuth, customersController.customers_post);
 router.delete('/customers/:id', apiAuth, customersController.customers_delete);
 router.put('/customers', apiAuth, customersController.customers_put);
 router.post('/customers/delete-multiple', apiAuth, customersController.customers_delete_multiple_post);
+router.get('/customers/:id/sendmessage', apiAuth, customersController.customers_send_message_get);
 
 // Template Routes
 router.get('/templates', apiAuth, templatesController.templates_get);
