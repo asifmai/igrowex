@@ -8,7 +8,7 @@ router.get('/:user/:customer', async (req, res) => {
   const customerId = req.params.customer;
 
   const emailRegEx = new RegExp(`^${userName}@\.*?\.*$`);
-  const user = await User.find({ email: emailRegEx });
+  const user = await User.findOne({ email: emailRegEx });
 
   const newReview = new Review({
     user: user._id,
