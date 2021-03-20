@@ -15,6 +15,7 @@ router.get('/:user/:customer', async (req, res) => {
     customer: customerId,
     type: user.links.google.active ? 'google' : 'yelp',
   });
+  await newReview.save();
 
   const redirectLink = user.links.google.active ? user.links.google.url : user.links.yelp.url;
   res.redirect(redirectLink);
