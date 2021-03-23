@@ -75,11 +75,11 @@ module.exports.users_links_post = async (req, res) => {
 
     // Validators
     const errors = [];
-    if (google == '' || yelp == '') {
-      errors.push('google and yelp are required');
+    if (google.active && google.url == '') {
+      errors.push('Please Select One of the Links!');
     }
-    if (validator.isEmpty(google.url) || validator.isEmpty(yelp.url)) {
-      errors.push('google and yelp are required');
+    if (yelp.active && yelp.url == '') {
+      errors.push('Please Select One of the Links!');
     }
 
     if (errors.length) {

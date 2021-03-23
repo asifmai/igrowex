@@ -19,36 +19,37 @@ module.exports.customers_post = async (req, res) => {
   try {
     // Fetch Data from Request
     const name = req.body.name ? req.body.name.trim() : '';
-    const email = req.body.email ? req.body.email.trim() : '';
-    const occupation = req.body.occupation ? req.body.occupation.trim() : '';
+    // const email = req.body.email ? req.body.email.trim() : '';
+    // const occupation = req.body.occupation ? req.body.occupation.trim() : '';
     const phone = req.body.phone ? req.body.phone.trim() : '';
-    const location = req.body.location ? req.body.location.trim() : '';
-    const smsNotification = req.body.smsNotification;
-    const emailNotification = req.body.emailNotification;
+    // const location = req.body.location ? req.body.location.trim() : '';
+    // const smsNotification = req.body.smsNotification;
+    // const emailNotification = req.body.emailNotification;
 
     // Validators
     const errors = [];
     if (
       validator.isEmpty(name) ||
-      validator.isEmpty(email) ||
-      validator.isEmpty(occupation) ||
-      validator.isEmpty(phone) ||
-      validator.isEmpty(location) ||
-      smsNotification === '' ||
-      emailNotification === ''
+      // validator.isEmpty(email) ||
+      // validator.isEmpty(occupation) ||
+      validator.isEmpty(phone)
+      // validator.isEmpty(location) ||
+      // smsNotification === '' ||
+      // emailNotification === ''
     ) {
-      errors.push('name, email, occupation, phone, location, smsNotification and emailNotification is required');
+      // errors.push('name, email, occupation, phone, location, smsNotification and emailNotification is required');
+      errors.push('Name and Phone are Required!');
     }
-    if (!validator.isEmail(email)) {
-      errors.push('Email not valid');
-    }
-    let foundCustomer = await Customer.findOne({ user: req.user._id, email });
+    // if (!validator.isEmail(email)) {
+    //   errors.push('Email not valid');
+    // }
+    // let foundCustomer = await Customer.findOne({ user: req.user._id, email });
+    // if (foundCustomer) {
+    //   errors.push('Email already added');
+    // }
+    let foundCustomer = await Customer.findOne({ user: req.user._id, phone });
     if (foundCustomer) {
-      errors.push('Email already added');
-    }
-    foundCustomer = await Customer.findOne({ user: req.user._id, phone });
-    if (foundCustomer) {
-      errors.push('Phone already added');
+      errors.push('Phone Already Added!');
     }
 
     if (errors.length) {
@@ -59,12 +60,12 @@ module.exports.customers_post = async (req, res) => {
     const newCustomer = new Customer({
       user: req.user._id,
       name,
-      email,
-      occupation,
+      email: '',
+      occupation: '',
       phone,
-      location,
-      smsNotification,
-      emailNotification,
+      location: '',
+      smsNotification: true,
+      emailNotification: true,
     });
     await newCustomer.save();
 
@@ -95,30 +96,30 @@ module.exports.customers_put = async (req, res) => {
     // Fetch Data from Request
     const customerId = req.body.customerId ? req.body.customerId.trim() : '';
     const name = req.body.name ? req.body.name.trim() : '';
-    const email = req.body.email ? req.body.email.trim() : '';
-    const occupation = req.body.occupation ? req.body.occupation.trim() : '';
+    // const email = req.body.email ? req.body.email.trim() : '';
+    // const occupation = req.body.occupation ? req.body.occupation.trim() : '';
     const phone = req.body.phone ? req.body.phone.trim() : '';
-    const location = req.body.location ? req.body.location.trim() : '';
-    const smsNotification = req.body.smsNotification;
-    const emailNotification = req.body.emailNotification;
+    // const location = req.body.location ? req.body.location.trim() : '';
+    // const smsNotification = req.body.smsNotification;
+    // const emailNotification = req.body.emailNotification;
 
     // Validators
     const errors = [];
     if (
       validator.isEmpty(customerId) ||
       validator.isEmpty(name) ||
-      validator.isEmpty(email) ||
-      validator.isEmpty(occupation) ||
-      validator.isEmpty(phone) ||
-      validator.isEmpty(location) ||
-      smsNotification === '' ||
-      emailNotification === ''
+      // validator.isEmpty(email) ||
+      // validator.isEmpty(occupation) ||
+      validator.isEmpty(phone)
+      // validator.isEmpty(location) ||
+      // smsNotification === '' ||
+      // emailNotification === ''
     ) {
-      errors.push('customerId, name, email, occupation, phone, location smsNotification and emailNotification is required');
+      errors.push('Name and Phone are Required!');
     }
-    if (!validator.isEmail(email)) {
-      errors.push('Email not valid');
-    }
+    // if (!validator.isEmail(email)) {
+    //   errors.push('Email not valid');
+    // }
 
     if (errors.length) {
       return res.status(400).json({ status: 400, data: errors.join('\n') });
@@ -127,12 +128,7 @@ module.exports.customers_put = async (req, res) => {
     // Process
     await Customer.findByIdAndUpdate(customerId, {
       name,
-      email,
-      occupation,
       phone,
-      location,
-      smsNotification,
-      emailNotification,
     });
     const data = await Customer.findById(customerId);
 

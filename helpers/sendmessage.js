@@ -11,49 +11,46 @@ module.exports = (userId, customerId) =>
     try {
       // Fetch Data
       const errors = [];
-      const user = await User.findById(userId);
-      const customer = await Customer.findById(customerId);
+      const user = await User.findById(userId).lean();
+      const customer = await Customer.findById(customerId).lean();
 
       // Validation
       // See if templates are created by user
       const templates = await Template.find({ user: userId });
-      if (templates.length == 0) errors.push('Please add a template first');
+      if (templates.length == 0) errors.push('Please add a Template');
 
       // See if a template is selected
       const selectedTemplate = templates.find((t) => t.selected);
-      if (!selectedTemplate) errors.push('Please select a template first');
+      if (!selectedTemplate) errors.push('Please select a Template');
 
       // See if one of the links are filled
-      const userLinks = user.links;
-      if (userLinks.google.url == '' && userLinks.yelp.url == '') errors.push('Please enter google or yelp url first');
-
-      // See if a link is selected
-      if (!userLinks.google.active && !userLinks.yelp.active) errors.push('Please select google or yelp url');
+      const activeLink = user.links.google.active ? user.links.google : user.links.yelp;
+      if (activeLink.url == '') errors.push('Please select Google or Yelp');
 
       if (errors.length) return reject(errors);
 
       // Process
       const redirectUrl = `${process.env.BACKEND_URL}/redirect/${user.email.match(/^.*(?=@)/gi)[0]}/${customerId}`;
       const messageBody = `${selectedTemplate.body}\n${redirectUrl}`;
-      const messageBodyEmail = `${selectedTemplate.body}<br /><a href="${redirectUrl}">${redirectUrl}</a>`;
-      if (customer.smsNotification) {
-        await twilio.sendMesage(customer.phone, messageBody);
-        const newMessage = new Message({
-          user: userId,
-          customer: customerId,
-          type: 'sms',
-        });
-        await newMessage.save();
-      }
-      if (customer.emailNotification) {
-        await mailer.sendMailToCustomer(customer.email, messageBodyEmail);
-        const newMessage = Message({
-          user: userId,
-          customer: customerId,
-          type: 'email',
-        });
-        await newMessage.save();
-      }
+      // const messageBodyEmail = `${selectedTemplate.body}<br /><a href="${redirectUrl}">${redirectUrl}</a>`;
+      // if (customer.smsNotification) {
+      await twilio.sendMesage(customer.phone, messageBody);
+      const newMessage = new Message({
+        user: userId,
+        customer: customerId,
+        type: 'sms',
+      });
+      await newMessage.save();
+      // }
+      // if (customer.emailNotification) {
+      //   await mailer.sendMailToCustomer(customer.email, messageBodyEmail);
+      //   const newMessage = Message({
+      //     user: userId,
+      //     customer: customerId,
+      //     type: 'email',
+      //   });
+      //   await newMessage.save();
+      // }
 
       resolve(true);
     } catch (error) {
