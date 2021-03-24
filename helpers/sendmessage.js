@@ -33,15 +33,15 @@ module.exports = (userId, customerId) =>
       const redirectUrl = `${process.env.BACKEND_URL}/redirect/${user.email.match(/^.*(?=@)/gi)[0]}/${customerId}`;
       const messageBody = `${selectedTemplate.body}\n${redirectUrl}`;
       // const messageBodyEmail = `${selectedTemplate.body}<br /><a href="${redirectUrl}">${redirectUrl}</a>`;
-      // if (customer.smsNotification) {
-      await twilio.sendMesage(customer.phone, messageBody);
-      const newMessage = new Message({
-        user: userId,
-        customer: customerId,
-        type: 'sms',
-      });
-      await newMessage.save();
-      // }
+      if (customer.smsNotification) {
+        await twilio.sendMesage(customer.phone, messageBody);
+        const newMessage = new Message({
+          user: userId,
+          customer: customerId,
+          type: 'sms',
+        });
+        await newMessage.save();
+      }
       // if (customer.emailNotification) {
       //   await mailer.sendMailToCustomer(customer.email, messageBodyEmail);
       //   const newMessage = Message({

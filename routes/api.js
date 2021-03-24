@@ -7,6 +7,7 @@ const articleController = require('../apicontrollers/articlescontroller.js');
 const customersController = require('../apicontrollers/customerscontroller.js');
 const emailController = require('../apicontrollers/emailcontroller.js');
 const templatesController = require('../apicontrollers/templatescontroller.js');
+const dashboardController = require('../apicontrollers/dashboardcontroller.js');
 
 // Authenticate Using Passport
 const login = passport.authenticate('local', { session: false });
@@ -36,6 +37,9 @@ router.get('/templates', apiAuth, templatesController.templates_get);
 router.post('/templates', apiAuth, templatesController.templates_post);
 router.delete('/templates/:id', apiAuth, templatesController.templates_delete);
 router.get('/templates/select/:id', apiAuth, templatesController.templates_select_get);
+
+// Dashboard Routes
+router.get('/dashboard', apiAuth, dashboardController.dashboard_get);
 
 // Articles Routes
 router.get('/articles', articleController.articles_get);
