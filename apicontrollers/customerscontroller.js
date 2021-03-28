@@ -1,5 +1,7 @@
 const validator = require('validator');
 const sendMessage = require('../helpers/sendmessage');
+const csv = require('csvtojson');
+const axios = require('axios');
 
 const Customer = require('../models/Customer');
 
@@ -178,6 +180,42 @@ module.exports.customers_send_message_get = async (req, res) => {
     }
   } catch (error) {
     console.log('customers_send_message_get error', error.stack);
+    res.status(500).json({ status: 500, data: 'Server Error' });
+  }
+};
+
+module.exports.customers_upload_post = async (req, res) => {
+  try {
+    var buffer = req.files.myFile.data;
+    const json = await csv().fromString(buffer.toString('utf8'));
+
+    if (json.length) {
+      for (let i = 0; i < json.length; i++) {
+        if (!json[0].name && !json[0].phone) {
+          return res.status(400).json({ status: 400, data: 'Invalid CSV' });
+        }
+      }
+    } else {
+      return res.status(400).json({ status: 400, data: 'Invalid CSV' });
+    }
+
+    for (let i = 0; i < json.length; i++) {
+      const newCustomer = new Customer({
+        user: req.user._id,
+        name: json[i].name,
+        email: '',
+        occupation: '',
+        phone: json[i].phone,
+        location: '',
+        smsNotification: true,
+        emailNotification: true,
+      });
+      await newCustomer.save();
+    }
+
+    res.status(200).json({ status: 200, data: 'done' });
+  } catch (error) {
+    console.log('customers_upload_post error', error.stack);
     res.status(500).json({ status: 500, data: 'Server Error' });
   }
 };

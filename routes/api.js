@@ -27,6 +27,7 @@ router.post('/users/removecard', apiAuth, userController.removecard_post);
 // Customers Routes
 router.get('/customers', apiAuth, customersController.customers_get);
 router.post('/customers', apiAuth, customersController.customers_post);
+router.post('/customers/upload', apiAuth, customersController.customers_upload_post);
 router.delete('/customers/:id', apiAuth, customersController.customers_delete);
 router.put('/customers', apiAuth, customersController.customers_put);
 router.post('/customers/delete-multiple', apiAuth, customersController.customers_delete_multiple_post);

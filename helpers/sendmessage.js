@@ -2,6 +2,7 @@ const User = require('../models/User');
 const Customer = require('../models/Customer');
 const Template = require('../models/Template');
 const Message = require('../models/Message');
+const axios = require('axios');
 
 const twilio = require('./twilio');
 const mailer = require('./mailer');
@@ -15,6 +16,9 @@ module.exports = (userId, customerId) =>
       const customer = await Customer.findById(customerId).lean();
 
       // Validation
+      if (!user.phone) {
+        errors.push('You have not been assigned a phone yet');
+      }
       // See if templates are created by user
       const templates = await Template.find({ user: userId });
       if (templates.length == 0) errors.push('Please add a Template');
@@ -31,10 +35,13 @@ module.exports = (userId, customerId) =>
 
       // Process
       const redirectUrl = `${process.env.BACKEND_URL}/redirect/${user.email.match(/^.*(?=@)/gi)[0]}/${customerId}`;
-      const messageBody = `${selectedTemplate.body}\n${redirectUrl}`;
+      const response = await axios.get(
+        `https://cutt.ly/api/api.php?key=a8923eae36ce3fb579e6b45fb6fa43bd8277c&short=${encodeURIComponent(redirectUrl)}`
+      );
+      const messageBody = `${selectedTemplate.body}\n${response.data.url.shortLink}`;
       // const messageBodyEmail = `${selectedTemplate.body}<br /><a href="${redirectUrl}">${redirectUrl}</a>`;
       if (customer.smsNotification) {
-        await twilio.sendMesage(customer.phone, messageBody);
+        await twilio.sendMesage(customer.phone, messageBody, user.phone);
         const newMessage = new Message({
           user: userId,
           customer: customerId,

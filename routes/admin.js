@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/admincontroller');
 const articleController = require('../controllers/articlecontroller');
+const usersController = require('../controllers/userscontroller');
 const auth = require('../helpers/auth');
 
 /* GET users listing. */
@@ -23,5 +24,9 @@ router.post('/articles', auth.ensureAuthenticatedAdmin, articleController.articl
 router.get('/articles/delete/:id', auth.ensureAuthenticatedAdmin, articleController.article_delete);
 router.get('/articles/edit/:id', auth.ensureAuthenticatedAdmin, articleController.editarticle_get);
 router.post('/articles/edit', auth.ensureAuthenticatedAdmin, articleController.editarticle_post);
+
+// Users Routes
+router.get('/users', auth.ensureAuthenticatedAdmin, usersController.users_get);
+router.post('/users/addphone', auth.ensureAuthenticatedAdmin, usersController.users_addphone_post);
 
 module.exports = router;

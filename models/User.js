@@ -32,6 +32,14 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    lastLogin: {
+      type: Date,
+      default: null,
+    },
+    phone: {
+      type: String,
+      default: '',
+    },
     links: {
       google: {
         url: String,

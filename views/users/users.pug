@@ -1,0 +1,80 @@
+extends ../layout
+
+block content
+  h2.my-4.text-center Users 
+
+  .row
+    .col.my-3
+      include ../includes/messages
+  .row
+    .col
+      table.table.table-borderless.table-hover
+        thead.bg-theme.text-white
+          tr
+            th Name
+            th Email
+            th Joined
+            th Last Login
+            th Stripe ID
+            th Twilio Phone
+        tbody
+          each user, index in users
+            tr
+              td=`${user.firstName} ${user.lastName}`
+              td=user.email
+              td.date-cell=user.createdAt
+              td.date-cell=user.lastLogin
+              td=user.stripeCustomerId
+              if user.phone
+                td=user.phone
+              else
+                td 
+                  a#addPhone(href="#", data-id=user._id) Add
+
+  #addPhoneModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='modelTitleId' aria-hidden='true')
+    .modal-dialog.modal-dialog-centered(role='document')
+      .modal-content
+        form(action='/users/addphone' method='post')
+          .modal-header
+            h5.modal-title Add Twilio Phone For User
+            button.close(type='button' data-dismiss='modal' aria-label='Close')
+              span(aria-hidden='true') &times;
+          .modal-body
+            input.d-none#userid(type='text' name='userid')
+            .form-group
+              label(for='phone') Twilio Phone Number
+              input#phone.form-control(type='text', name='phone', required)
+          .modal-footer
+            button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+            button.btn.btn-primary(type='submit') Save
+block customscripts
+  script.
+    $('.date-cell').each(function (index, element) {
+      $(element).text(moment($(element).text()).format('M/D/YY h:m A'))
+    });
+
+    $(document).ready(function () {
+      $('.btn-delete').on('click', function (e) {
+        e.preventDefault();
+        var deleteURL = $(this).attr("href");
+        swal.fire({
+          title: "Are you sure?",
+          text: "You will not be able to recover this Artist!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+        }).then(function (result) {
+          if (result.value) {
+            window.location.href = deleteURL;
+          }
+        })
+      });
+
+      $('a#addPhone').click(function (e) { 
+        e.preventDefault();
+        const userId = $(this).attr('data-id');
+        console.log(userId);
+        $('#addPhoneModal input#userid').val(userId);
+        $('#addPhoneModal').modal('show');
+      });
+    });
