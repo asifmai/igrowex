@@ -16,7 +16,6 @@ block content
             th Joined
             th Last Login
             th Stripe ID
-            th Twilio Phone
         tbody
           each user, index in users
             tr
@@ -25,11 +24,6 @@ block content
               td.date-cell=user.createdAt
               td.date-cell=user.lastLogin
               td=user.stripeCustomerId
-              if user.phone
-                td=user.phone
-              else
-                td 
-                  a#addPhone(href="#", data-id=user._id) Add
 
   #addPhoneModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='modelTitleId' aria-hidden='true')
     .modal-dialog.modal-dialog-centered(role='document')
@@ -68,13 +62,5 @@ block customscripts
             window.location.href = deleteURL;
           }
         })
-      });
-
-      $('a#addPhone').click(function (e) { 
-        e.preventDefault();
-        const userId = $(this).attr('data-id');
-        console.log(userId);
-        $('#addPhoneModal input#userid').val(userId);
-        $('#addPhoneModal').modal('show');
       });
     });
