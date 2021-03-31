@@ -7,7 +7,8 @@ module.exports.sendMesage = (phoneNumber, smsBody, twilioPhone) =>
         .create({
           body: smsBody,
           // from: process.env.TWILIO_FROM_NUMBER,
-          from: twilioPhone,
+          from: 'MCD',
+          // from: twilioPhone,
           to: phoneNumber,
         })
         .then((message) => {
