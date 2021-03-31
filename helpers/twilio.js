@@ -1,13 +1,13 @@
 const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-module.exports.sendMesage = (phoneNumber, smsBody, twilioPhone) =>
+module.exports.sendMesage = (phoneNumber, smsBody, twilioPhone, userName) =>
   new Promise(async (resolve, reject) => {
     try {
       client.messages
         .create({
           body: smsBody,
           // from: process.env.TWILIO_FROM_NUMBER,
-          from: 'MCD',
+          from: userName,
           // from: twilioPhone,
           to: phoneNumber,
         })

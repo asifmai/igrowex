@@ -39,7 +39,7 @@ module.exports = (userId, customerId) =>
       const messageBody = `${selectedTemplate.body}\n${response.data.url.shortLink}`;
       // const messageBodyEmail = `${selectedTemplate.body}<br /><a href="${redirectUrl}">${redirectUrl}</a>`;
       if (customer.smsNotification) {
-        await twilio.sendMesage(customer.phone, messageBody, user.phone);
+        await twilio.sendMesage(customer.phone, messageBody, user.phone, user.firstName + ' ' + user.lastName);
         const newMessage = new Message({
           user: userId,
           customer: customerId,
