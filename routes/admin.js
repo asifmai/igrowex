@@ -27,5 +27,8 @@ router.post('/articles/edit', auth.ensureAuthenticatedAdmin, articleController.e
 
 // Users Routes
 router.get('/users', auth.ensureAuthenticatedAdmin, usersController.users_get);
+router.get('/users/delete/:id', auth.ensureAuthenticatedAdmin, usersController.users_delete_get);
+router.get('/users/edit/:id', auth.ensureAuthenticatedAdmin, usersController.users_edit_get);
+router.post('/users/edit/:id', auth.ensureAuthenticatedAdmin, usersController.users_edit_post);
 
 module.exports = router;

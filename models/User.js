@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    nameForMessage: String,
     stripeCustomerId: String,
     lastCharged: {
       type: Date,

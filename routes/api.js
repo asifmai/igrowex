@@ -19,6 +19,7 @@ router.get('/', (req, res) => res.status(200).json({ status: 200, data: 'iGrowX 
 // User Routes
 router.post('/users', userController.register_post);
 router.post('/users/login', login, authController.login_post);
+router.put('/users', apiAuth, userController.users_put);
 router.get('/users/me', apiAuth, authController.me_get);
 router.post('/users/links', apiAuth, userController.users_links_post);
 router.get('/users/setupcard', apiAuth, userController.setupcard_get);

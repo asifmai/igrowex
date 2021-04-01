@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  h2.my-4.text-center Update User
+  include ../includes/messages
+  
+  form(action=`/users/edit/${foundUser._id}`, method="post", data-parsley-validate)
+    .container
+      .card
+        .card-body
+          .row
+            .col-lg-6.form-group
+              label(for="firstName") First Name
+              input#firstName.form-control(type="text" name="firstName" required value=foundUser.firstName)
+            .col-lg-6.form-group
+              label(for="lastName") Last Name
+              input#lastName.form-control(type="text" name="lastName" value=foundUser.lastName required)
+            .col-lg-6.form-group
+              label(for="email") Email
+              input#email.form-control(type="text" name="email" value=foundUser.email required)
+            .col-lg-6.form-group
+              label(for="nameForMessage") Name Used For Messaging Customers
+              input#nameForMessage.form-control(type="text" name="nameForMessage" value=foundUser.nameForMessage required)
+          .row
+            .col-md-2.offset-md-4.mt-3
+              a.btn-block.btn.btn-light(href="/users") Cancel
+            .col-md-2.mt-3
+              button.btn-block.btn.btn-theme Update

@@ -34,9 +34,9 @@ block content
               td.date-cell=article.createdAt
               td.date-cell=article.editedAt
               td
-                a.text-danger.btn-delete(href=`/articles/delete/${article.id}`, title="Delete Article")
+                a.text-danger.btn-delete(href=`/articles/delete/${article._id}`, title="Delete Article")
                   fa.fas.fa-trash
-                a.text-primary.ml-3(href=`/articles/edit/${article.id}`, title="Update Article")
+                a.text-primary.ml-3(href=`/articles/edit/${article._id}`, title="Update Article")
                   fa.fas.fa-edit
 
 block customscripts

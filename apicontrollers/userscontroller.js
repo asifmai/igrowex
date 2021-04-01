@@ -19,10 +19,17 @@ module.exports.register_post = async (req, res) => {
   const password = req.body.password ? req.body.password.trim() : '';
   const firstName = req.body.firstName ? req.body.firstName.trim() : '';
   const lastName = req.body.lastName ? req.body.lastName.trim() : '';
+  const nameForMessage = req.body.nameForMessage ? req.body.nameForMessage.trim() : '';
 
   const errors = [];
-  if (validator.isEmpty(firstName) || validator.isEmpty(lastName) || validator.isEmpty(email) || validator.isEmpty(password)) {
-    errors.push('name, email, firstName and lastName are required');
+  if (
+    validator.isEmpty(firstName) ||
+    validator.isEmpty(lastName) ||
+    validator.isEmpty(email) ||
+    validator.isEmpty(password) ||
+    validator.isEmpty(nameForMessage)
+  ) {
+    errors.push('First Name, Last Name, Email, Password and Name For Message are required!');
   }
   if (!validator.isEmail(email)) errors.push('Email is not valid');
   if (!validator.isByteLength(password, { min: 6 })) errors.push('Password must be at least 6 characters');
@@ -49,6 +56,7 @@ module.exports.register_post = async (req, res) => {
       email,
       password,
       stripeCustomerId: customer.id,
+      nameForMessage,
       links: {
         google: {
           url: '',
@@ -59,6 +67,41 @@ module.exports.register_post = async (req, res) => {
       },
     });
     await user.save();
+
+    res.status(200).json({ status: 200, data: generateTokenResponse(user) });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+module.exports.users_put = async (req, res) => {
+  const user = req.user;
+  const email = req.body.email ? req.body.email.trim() : '';
+  const password = req.body.password ? req.body.password.trim() : '';
+  const firstName = req.body.firstName ? req.body.firstName.trim() : '';
+  const lastName = req.body.lastName ? req.body.lastName.trim() : '';
+  const nameForMessage = req.body.nameForMessage ? req.body.nameForMessage.trim() : '';
+
+  const errors = [];
+  if (validator.isEmpty(firstName) || validator.isEmpty(lastName) || validator.isEmpty(email) || validator.isEmpty(nameForMessage)) {
+    errors.push('First Name, Last Name, Email, Password and Name For Message are required!');
+  }
+  if (!validator.isEmpty(email) && !validator.isEmail(email)) errors.push('Email is not valid');
+  if (!validator.isEmpty(password) && !validator.isByteLength(password, { min: 6 })) errors.push('Password must be at least 6 characters');
+
+  if (errors.length > 0) {
+    return res.status(400).json({ status: 400, data: errors.join('\n') });
+  }
+
+  try {
+    await User.findByIdAndUpdate(req.user._id, {
+      firstName,
+      lastName,
+      email,
+      nameForMessage,
+    });
+    if (!validator.isEmpty(password)) await User.findByIdAndUpdate(req.user._id, { password });
 
     res.status(200).json({ status: 200, data: generateTokenResponse(user) });
   } catch (err) {

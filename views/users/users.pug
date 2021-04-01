@@ -13,17 +13,27 @@ block content
           tr
             th Name
             th Email
+            th Name On Message
+            th Account Status
             th Joined
             th Last Login
             th Stripe ID
+            th Actions
         tbody
           each user, index in users
             tr
               td=`${user.firstName} ${user.lastName}`
               td=user.email
+              td=user.nameForMessage
+              td=user.active ? 'Active' : 'Suspended'
               td.date-cell=user.createdAt
               td.date-cell=user.lastLogin
               td=user.stripeCustomerId
+              td
+                a.text-danger.btn-delete(href=`/users/delete/${user._id}`, title="Delete User")
+                  fa.fas.fa-trash
+                a.text-primary.ml-3(href=`/users/edit/${user._id}`, title="Update User")
+                  fa.fas.fa-edit
 
   #addPhoneModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='modelTitleId' aria-hidden='true')
     .modal-dialog.modal-dialog-centered(role='document')
@@ -53,7 +63,7 @@ block customscripts
         var deleteURL = $(this).attr("href");
         swal.fire({
           title: "Are you sure?",
-          text: "You will not be able to recover this Artist!",
+          text: "The User and all their Customers will be deleted!",
           type: "warning",
           showCancelButton: true,
           confirmButtonText: "Yes, delete it!",
